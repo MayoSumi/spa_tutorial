@@ -46,6 +46,9 @@
         "post-install-cmd": [
             "php artisan clear-compiled",
             "chmod -R 777 public/"
+        ],
+        "compile": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ]
     },
     "extra": {
