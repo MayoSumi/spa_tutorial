@@ -960,7 +960,6 @@ render._withStripped = true
   \********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ normalizeComponent)
@@ -1058,7 +1057,6 @@ function normalizeComponent (
     }
   }
 
-
   return {
     exports: scriptExports,
     options: options
@@ -1068,12 +1066,10 @@ function normalizeComponent (
 
 /***/ }),
 
-
 /***/ "./node_modules/vue-router/dist/vue-router.esm.js":
 /*!********************************************************!*\
   !*** ./node_modules/vue-router/dist/vue-router.esm.js ***!
   \********************************************************/
-
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -16425,7 +16421,6 @@ Vue.compile = compileToFunctions;
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
@@ -16434,6 +16429,5 @@ Vue.compile = compileToFunctions;
 /******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
-
 /******/ })()
 ;
