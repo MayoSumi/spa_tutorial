@@ -1,5 +1,5 @@
-import Vue from '/Applications/MAMP/htdocs/spa_tutorial/node_modules/vue/dist/vue.esm.browser';
-import VueRouter from '/Applications/MAMP/htdocs/spa_tutorial/node_modules/vue-router/dist/vue-router.esm.browser';
+import Vue from "vue"
+import VueRouter from "vue-router"
 
 // ページコンポーネントをインポートする
 import PhotoList from './pages/PhotoList.vue'
