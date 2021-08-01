@@ -1,5 +1,9 @@
+import { OK } from "../util";
+import {comment} from "postcss";
+
 const state = {
-    user: null
+    user: null,
+    apiStatus: null
 }
 
 const getters = {
@@ -10,6 +14,9 @@ const getters = {
 const mutations = {
     setUser (state, user) {
         state.user = user
+    },
+    setApiStatus (state, status) {
+        state.apiStatus = status
     }
 }
 
@@ -19,8 +26,21 @@ const actions = {
         context.commit('setUser', response.data)
     },
     async login (context, data) {
+        context.commit('setApiStatus', null)
+
+        // API通信の状態を取得
         const response = await axios.post('/api/login', data)
-        context.commit('setUser', response.data)
+            .catch(err => err.response || err)
+
+        if ( response.status === OK) {
+            context.commit('setApiStatus', true)
+            context.commit('setUser', response.data)
+            return false
+        }
+
+        context.commit('setApiStatus', false)
+        // errorモジュールのミューテーションをcommitするためrootを有効にする
+        context.commit('error/setCode', response.status, { root: true })
     },
     async logout (context, data) {
         const response = await axios.post('/api/logout', data)
@@ -29,6 +49,7 @@ const actions = {
     async currentUser (context) {
         const response = await axios.get('/api/user')
         const user = response.data || null
+
         context.commit('setUser', user)
     }
 }

@@ -43,6 +43,11 @@
 
 <script>
 export default {
+    computed: {
+        apiStatus () {
+            return this.$store.state.auth.apiStatus
+        }
+    },
     data () {
         return {
             tab: 1,
@@ -62,7 +67,10 @@ export default {
         async login() {
             await this.$store.dispatch('auth/login', this.loginForm)
 
-            this.$router.push('/')
+            // API通信が成功した場合のみTOPに遷移する
+            if (this.apiStatus) {
+                this.$router.push('/')
+            }
         },
         async register() {
             // authストアのresigterアクションを呼び出す

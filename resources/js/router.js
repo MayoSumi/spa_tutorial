@@ -28,6 +28,10 @@ const routes = [
                 next()
             }
         }
+    },
+    {
+        path: '/500',
+        component: SystemError
     }
 ]
 
