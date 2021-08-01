@@ -64,7 +64,7 @@ export default {
 
             this.$router.push('/')
         },
-        async register () {
+        async register() {
             // authストアのresigterアクションを呼び出す
             await this.$store.dispatch('auth/register', this.registerForm)
 
