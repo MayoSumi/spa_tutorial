@@ -1,9 +1,10 @@
-import { OK } from "../util";
+import { OK, UNPROCESSABLE_ENTITY } from "../util";
 import {comment} from "postcss";
 
 const state = {
     user: null,
-    apiStatus: null
+    apiStatus: null,
+    loginErrorMessages: null
 }
 
 const getters = {
@@ -17,6 +18,9 @@ const mutations = {
     },
     setApiStatus (state, status) {
         state.apiStatus = status
+    },
+    setLoginErrorMessages (state, messages) {
+        state.loginErrorMessages = messages
     }
 }
 
@@ -39,8 +43,12 @@ const actions = {
         }
 
         context.commit('setApiStatus', false)
-        // errorモジュールのミューテーションをcommitするためrootを有効にする
-        context.commit('error/setCode', response.status, { root: true })
+        if (response.status === UNPROCESSABLE_ENTITY) {
+            context.commit('setLoginErrorMessages', response.data.errors)
+        } else {
+            // errorモジュールのミューテーションをcommitするためrootを有効にする
+            context.commit('error/setCode', response.status, { root: true })
+        }
     },
     async logout (context, data) {
         const response = await axios.post('/api/logout', data)
