@@ -15,11 +15,33 @@
 <script>
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
+import { INTERNAL_SERVER_ERROR } from './util'
+
 
 export default {
     components: {
         Navbar,
-        Footer
+        Footer,
+    },
+    computed: {
+        // ステータスコードを取得
+        errorCode () {
+            return this.$store.state.error.code
+        }
+    },
+    watch: {
+        errorCode: {
+            handler (val) {
+                // 500エラーの場合はエラーページに遷移させる
+                if(val === INTERNAL_SERVER_ERROR) {
+                    this.$router.push('/500')
+                }
+            },
+            immediate: true
+        },
+        $route () {
+            this.$store.commit('error/setCode', null)
+        }
     }
 }
 </script>
