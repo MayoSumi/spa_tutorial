@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Mix;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePhoto;
 use App\Models\Photo;
+use App\Models\Comment;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;

@@ -95,9 +95,12 @@ export default {
             this.photo = response.data
         },
         async addComment () {
-            const response = await axios.post('/api/photos/${this.id}/comments', {
+            const response = await axios.post(`/api/photos/${this.id}/comments`, {
                 content: this.commentContent
             })
+
+            console.log(response)
+
 
             // バリデーションエラー
             if (response.status === UNPROCESSABLE_ENTITY) {

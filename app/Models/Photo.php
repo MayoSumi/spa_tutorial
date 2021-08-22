@@ -23,13 +23,13 @@ class Photo extends Model
     ];
 
     /**
-     * JSONに含めない属性
+     * JSONに含める属性
      */
     protected $visible = [
         'id',
         'owner',
         'url',
-        'comment_text'
+        'comments'
     ];
 
     public $incrementing = false;
