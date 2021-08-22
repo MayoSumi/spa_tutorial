@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class PhotoController extends Controller
 {
@@ -21,15 +22,16 @@ class PhotoController extends Controller
      * 写真投稿
      * @param StorePhoto $request
      * @return Response
+     * @throws Exception
      */
     public function create(StorePhoto $request)
     {
-        $extention = $request->photo->extension();
+        $extension = $request->photo->extension();
 
         $photo = new Photo();
 
         // ランダムなID値と拡張子を連結したものをファイル名に指定
-        $photo->filename = $photo->id . '.' . $extention;
+        $photo->filename = $photo->id . '.' . $extension;
 
         Storage::cloud()
             ->putFileAs('', $request->photo, $photo->filename, 'public');
