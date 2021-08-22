@@ -6,10 +6,13 @@ use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Photo extends Model
 {
@@ -20,6 +23,8 @@ class Photo extends Model
      */
     protected $appends = [
         'url',
+        'likes_count',
+        'liked_by_user',
     ];
 
     /**
@@ -29,7 +34,9 @@ class Photo extends Model
         'id',
         'owner',
         'url',
-        'comments'
+        'comments',
+        'likes_count',
+        'liked_by_user',
     ];
 
     public $incrementing = false;
@@ -109,5 +116,38 @@ class Photo extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class)->orderBy('id', 'desc');
+    }
+
+    /**
+     * ユーザー
+     * @return BelongsToMany
+     */
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+    }
+
+    /**
+     * アクセサ - likes_count
+     * @return int
+     */
+    public function getLikesCountAttribute()
+    {
+        return $this->likes->count();
+    }
+
+    /**
+     * アクセサ - liked_by_user
+     * @return bool
+     */
+    public function getLikedByUserAttribute()
+    {
+        if (Auth::guest()) {
+            return false;
+        }
+
+        return $this->likes->contains(function ($user) {
+            return $user->id === Auth::user()->id;
+        });
     }
 }
