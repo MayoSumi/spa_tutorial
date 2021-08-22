@@ -5,11 +5,30 @@ namespace App\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class Photo extends Model
 {
     use HasFactory;
+
+    /**
+     * JSONに含める属性
+     */
+    protected $appends = [
+        'url',
+    ];
+
+    /**
+     * JSONに含めない属性
+     */
+    protected $visible = [
+        'id',
+        'owner',
+        'url',
+    ];
 
     public $incrementing = false;
     protected $keyType = 'string';
@@ -61,5 +80,23 @@ class Photo extends Model
         }
 
         return $id;
+    }
+
+    /**
+     * 画像の投稿者
+     * @return HasMany
+     */
+    public function owner(): HasMany
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id', 'users');
+    }
+
+    /**
+     * アクセサ - url
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        return Storage::cloud()->url($this->attributes['filename']);
     }
 }
