@@ -23,12 +23,13 @@ class Photo extends Model
     ];
 
     /**
-     * JSONに含めない属性
+     * JSONに含める属性
      */
     protected $visible = [
         'id',
         'owner',
         'url',
+        'comments'
     ];
 
     public $incrementing = false;
@@ -99,5 +100,14 @@ class Photo extends Model
     public function getUrlAttribute(): string
     {
         return Storage::cloud()->url($this->attributes['filename']);
+    }
+
+    /**
+     * コメント
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->orderBy('id', 'desc');
     }
 }
