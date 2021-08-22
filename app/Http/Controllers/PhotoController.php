@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Mix;
 use Illuminate\Http\Request;
@@ -92,8 +93,26 @@ class PhotoController extends Controller
      */
     public function show(string $id): Photo
     {
-        $photo = Photo::where('id', $id)->with(['owner'])->first();
+        $photo = Photo::where('id', $id)->with(['owner', 'comments.author'])->first();
 
         return $photo ?? abort(404);
+    }
+
+    /**
+     * コメント投稿
+     * @param Photo $photo
+     * @param StorePhoto $request
+     * @return Response
+     */
+    public function addComment(Photo $photo, StorePhoto $request): Response
+    {
+        $comment = new Comment();
+        $comment->comment_text = $request->get('comment_text');
+        $comment->user_id = Auth::user()->id;
+        $photo->comments()->save($comment);
+
+        $new_comment = Comment::where('id', $comment->id)->with('author')->first();
+
+        return \response($new_comment, 201);
     }
 }
